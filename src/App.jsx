@@ -1,8 +1,8 @@
-import AppRoutes from './routes/AppRoutes'
+/* App.jsx - Main application wrapper with routing */
 import './styles/global.css'
+import './App.css'
+import AppRoutes from './routes/AppRoutes'
 
-function App() {
+export default function App() {
   return <AppRoutes />
 }
-
-export default App

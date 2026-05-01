@@ -1,267 +1,109 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import './Footer.css';
 
-const policyLinks = [
-  { label: 'Hướng dẫn mua hàng', href: '/huong-dan' },
-  { label: 'Hướng dẫn chọn size', href: '/bang-size-tong-hop' },
-  { label: 'Chính sách thanh toán', href: '/chinh-sach-thanh-toan' },
-  { label: 'Chính sách vận chuyển', href: '/van-chuyen' },
-  { label: 'Chính sách đổi trả - bảo hành', href: '/quy-dinh-doi-tra-hang-online' },
-  { label: 'Chỉnh sách đổi trả tại cửa hàng', href: '/quy-dinh-doi-tra-hang-tai-shop' },
-  { label: 'Chính sách bảo mật', href: '/chinh-sach' },
+const policies = [
+  'Hướng dẫn mua hàng',
+  'Chính sách thanh toán',
+  'Chính sách vận chuyển',
+  'Chính sách đổi trả',
+  'Chính sách bảo mật',
 ];
 
-const aboutLinks = [
-  { label: 'Giới thiệu', href: '/gioi-thieu' },
-  { label: 'Liên hệ', href: '/lien-he' },
-  { label: 'Hệ thống cửa hàng', href: '/he-thong-cua-hang' },
-  { label: 'Điều khoản và điều kiện', href: '/dieu-khoan' },
-  { label: 'Tuyển đại lý', href: '/tuyen-dai-ly' },
-];
-
-const socialLinks = [
-  {
-    name: 'Facebook',
-    icon: '📘',
-    href: 'https://www.facebook.com/maxxsport.com.vn',
-  },
-  {
-    name: 'Zalo',
-    icon: '💬',
-    href: 'https://zalo.me/2670394599170994691',
-  },
-  {
-    name: 'Instagram',
-    icon: '📷',
-    href: 'https://www.instagram.com/maxxsportvietnam.vn',
-  },
-  {
-    name: 'YouTube',
-    icon: '▶️',
-    href: 'https://www.youtube.com/@Maxxsport.Official',
-  },
-  {
-    name: 'TikTok',
-    icon: '🎵',
-    href: 'https://www.tiktok.com/@maxxsport.vn',
-  },
+const companyLinks = [
+  'Giới thiệu',
+  'Liên hệ',
+  'Hệ thống cửa hàng',
+  'Tuyển dụng',
+  'Blog',
 ];
 
 export default function Footer() {
   const [email, setEmail] = useState('');
-  const [newsMessage, setNewsMessage] = useState('');
-  const [policyExpanded, setPolicyExpanded] = useState(true);
-  const [aboutExpanded, setAboutExpanded] = useState(true);
-  const [newsExpanded, setNewsExpanded] = useState(true);
+  const [subscribed, setSubscribed] = useState(false);
 
-  const handleNewsletterSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (email) {
-      setNewsMessage('Đăng ký thành công! Vui lòng kiểm tra email của bạn.');
+    if (email.trim()) {
+      setSubscribed(true);
       setEmail('');
-      setTimeout(() => setNewsMessage(''), 3000);
+      setTimeout(() => setSubscribed(false), 3000);
     }
   };
 
   return (
-    <footer className="footer">
-      <div className="mid-footer">
-        <div className="footer-container">
-          <div className="footer-row">
-            {/* Left Column: Logo, Address, Contact */}
-            <div className="footer-col footer-col-lg-3">
-              <div className="footer-block footer-contact-block">
-                <Link to="/" className="footer-logo">
-                  <div className="logo-text">MaxxSport</div>
-                </Link>
+    <footer className="outer-wrapper footer-outer">
+      <div className="inner-container footer-grid">
 
-                <div className="footer-section">
-                  <div className="footer-contact-item">
-                    <span className="contact-icon">📍</span>
-                    <div>
-                      <span className="contact-label">Địa chỉ:</span>
-                      <p className="contact-value">
-                        CH2.2, Tầng 2, Tòa Handiresco, Số 31 Lê Văn Lương, Phường Thanh Xuân, TP. Hà Nội
-                      </p>
-                    </div>
-                  </div>
+        {/* Column 1 – Company */}
+        <div className="footer-col">
+          <h4 className="footer-title">Về Maxx Sport</h4>
+          <p className="footer-body">
+            Thương hiệu thể thao hàng đầu Việt Nam, cung cấp sản phẩm và dịch vụ thể thao cao cấp.
+          </p>
+          <address className="footer-address">
+            <p><strong>Địa chỉ:</strong> CH2.2, Tầng 2, Tòa Handiresco, 31 Lê Văn Lương, Hà Nội</p>
+            <p><strong>Hotline:</strong> <a href="tel:1900633083">1900 633 083</a></p>
+            <p><strong>Email:</strong> <a href="mailto:support@maxxsport.vn">support@maxxsport.vn</a></p>
+          </address>
+        </div>
 
-                  <div className="footer-contact-item">
-                    <span className="contact-icon">📞</span>
-                    <div>
-                      <span className="contact-label">Số điện thoại:</span>
-                      <a href="tel:1900633083" className="contact-value link">
-                        1900633083
-                      </a>
-                    </div>
-                  </div>
+        {/* Column 2 – Policies */}
+        <div className="footer-col">
+          <h4 className="footer-title">Chính sách</h4>
+          <ul className="footer-links">
+            {policies.map((item, i) => (
+              <li key={i}><a href="/">{item}</a></li>
+            ))}
+          </ul>
+        </div>
 
-                  <div className="footer-contact-item">
-                    <span className="contact-icon">✉️</span>
-                    <div>
-                      <span className="contact-label">Email:</span>
-                      <a href="mailto:maxxsport.online@gmail.com" className="contact-value link">
-                        maxxsport.online@gmail.com
-                      </a>
-                    </div>
-                  </div>
-                </div>
+        {/* Column 3 – Company */}
+        <div className="footer-col">
+          <h4 className="footer-title">Công ty</h4>
+          <ul className="footer-links">
+            {companyLinks.map((item, i) => (
+              <li key={i}><a href="/">{item}</a></li>
+            ))}
+          </ul>
+        </div>
 
-                <div className="footer-copyright">
-                  © 2015 Công ty Cổ phần Đầu tư Phát Triển Thương Mại Thiên Sơn
-                  <br />
-                  MST/ĐKKD/QĐTL: 0107139974
-                  <br />
-                  Bản quyền của Maxxsport
-                </div>
-              </div>
-            </div>
+        {/* Column 4 – Newsletter + Social */}
+        <div className="footer-col">
+          <h4 className="footer-title">Đăng ký nhận tin</h4>
+          <p className="footer-body">Nhận ưu đãi độc quyền trực tiếp vào email của bạn.</p>
 
-            {/* Right Column: 3 Sub-columns */}
-            <div className="footer-col footer-col-lg-9">
-              <div className="footer-row">
-                {/* Policies Column */}
-                <div className="footer-col footer-col-lg-4">
-                  <div className="footer-block footer-link-block">
-                    <h3
-                      className={`footer-title ${policyExpanded ? 'active' : ''}`}
-                      onClick={() => setPolicyExpanded(!policyExpanded)}
-                    >
-                      CHÍNH SÁCH
-                      <span className="toggle-icon">{policyExpanded ? '−' : '+'}</span>
-                    </h3>
-                    {policyExpanded && (
-                      <ul className="footer-link-list">
-                        {policyLinks.map((link, idx) => (
-                          <li key={idx}>
-                            <Link to={link.href} className="footer-link">
-                              {link.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
+          <form className="newsletter-form" onSubmit={handleSubmit} noValidate>
+            <input
+              type="email"
+              placeholder="Nhập email của bạn"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              aria-label="Email đăng ký nhận tin"
+            />
+            <button type="submit">Đăng ký</button>
+          </form>
 
-                {/* About Column */}
-                <div className="footer-col footer-col-lg-4">
-                  <div className="footer-block footer-link-block">
-                    <h3
-                      className={`footer-title ${aboutExpanded ? 'active' : ''}`}
-                      onClick={() => setAboutExpanded(!aboutExpanded)}
-                    >
-                      VỀ CHÚNG TÔI
-                      <span className="toggle-icon">{aboutExpanded ? '−' : '+'}</span>
-                    </h3>
-                    {aboutExpanded && (
-                      <ul className="footer-link-list">
-                        {aboutLinks.map((link, idx) => (
-                          <li key={idx}>
-                            <Link to={link.href} className="footer-link">
-                              {link.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
+          {subscribed && (
+            <p className="newsletter-success" role="alert">✓ Cảm ơn bạn đã đăng ký!</p>
+          )}
 
-                {/* Newsletter & Social Column */}
-                <div className="footer-col footer-col-lg-4">
-                  <div className="footer-block footer-newsletter-block">
-                    <h3
-                      className={`footer-title ${newsExpanded ? 'active' : ''}`}
-                      onClick={() => setNewsExpanded(!newsExpanded)}
-                    >
-                      ĐĂNG KÝ NHẬN TIN
-                      <span className="toggle-icon">{newsExpanded ? '−' : '+'}</span>
-                    </h3>
-                    {newsExpanded && (
-                      <>
-                        <p className="newsletter-subtitle">
-                          Bạn muốn nhận khuyến mãi đặc biệt? Đăng ký ngay.
-                        </p>
-                        <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
-                          <input
-                            type="email"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Nhập địa chỉ email"
-                            required
-                            className="newsletter-input"
-                          />
-                          <button type="submit" className="newsletter-btn">
-                            Đăng ký
-                          </button>
-                        </form>
-                        {newsMessage && (
-                          <div className="newsletter-message success">
-                            {newsMessage}
-                          </div>
-                        )}
-
-                        {/* Social Links */}
-                        <ul className="social-links">
-                          {socialLinks.map((social, idx) => (
-                            <li key={idx}>
-                              <a
-                                href={social.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="social-link"
-                                title={social.name}
-                                aria-label={social.name}
-                              >
-                                <span className="social-icon">{social.icon}</span>
-                                <span className="social-name">{social.name}</span>
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Trust Badges Row */}
-              <div className="footer-row footer-badges-row">
-                <div className="footer-col footer-col-lg-4">
-                  <div className="footer-badge">
-                    <a
-                      href="http://online.gov.vn/Home/WebDetails/55964"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="badge-link"
-                      title="Bộ Công Thương"
-                    >
-                      <span className="badge-icon">🏛️</span>
-                      <span className="badge-text">Bộ Công Thương</span>
-                    </a>
-                  </div>
-                </div>
-
-                <div className="footer-col footer-col-lg-4">
-                  <div className="footer-badge">
-                    <span className="badge-icon">✓</span>
-                    <span className="badge-text">Thanh toán an toàn</span>
-                  </div>
-                </div>
-
-                <div className="footer-col footer-col-lg-4">
-                  <div className="footer-badge">
-                    <span className="badge-icon">🚚</span>
-                    <span className="badge-text">Giao hàng nhanh</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="social-row">
+            <img src="https://img.icons8.com/color/48/facebook-new.png" width="36" height="36" alt="Facebook" title="Facebook" />
+            <img src="https://img.icons8.com/color/48/zalo.png" width="36" height="36" alt="Zalo" title="Zalo" />
+            <img src="https://img.icons8.com/color/48/youtube-play.png" width="36" height="36" alt="YouTube" title="YouTube" />
+            <img src="https://img.icons8.com/fluency/48/instagram-new.png" width="36" height="36" alt="Instagram" title="Instagram" />
           </div>
         </div>
+
+        {/* Payment row — spans all columns */}
+        <div className="payment-row">
+          <img src="https://placehold.co/120x40/00529c/ffffff?text=Bo+Cong+Thuong" alt="Bộ Công Thương" />
+          <img src="https://placehold.co/90x40/00529c/ffffff?text=VNPay" alt="VNPay" />
+          <img src="https://placehold.co/90x40/ffcc00/000000?text=COD" alt="COD" />
+          <p className="footer-copyright">© 2015–2026 MaxxSport. All rights reserved. | MST: 0107139974</p>
+        </div>
+
       </div>
     </footer>
   );
