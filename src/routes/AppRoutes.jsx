@@ -20,6 +20,8 @@ export default function AppRoutes() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/payment-management" element={<PaymentManagement />} />
+          <Route path="/new-arrivals" element={<CategoryPage />} />
+          <Route path="/category" element={<CategoryPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </MainLayout>

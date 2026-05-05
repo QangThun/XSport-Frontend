@@ -16,7 +16,7 @@ const sportsCategories = [
 const navLinks = [
   { label: 'THƯƠNG HIỆU', href: '#' },
   // MÔN THỂ THAO is the dropdown — inserted inline below
-  { label: 'SẢN PHẨM MỚI', href: '#' },
+  { label: 'SẢN PHẨM MỚI', href: '/new-arrivals' },
   { label: 'NAM', href: '#' },
   { label: 'NỮ', href: '#' },
   { label: 'TRẺ EM', href: '#' },
@@ -27,7 +27,7 @@ const navLinks = [
 const mobileNavLinks = [
   { label: 'THƯƠNG HIỆU', href: '#' },
   { label: 'MÔN THỂ THAO', href: '#' },
-  { label: 'SẢN PHẨM MỚI', href: '#' },
+  { label: 'SẢN PHẨM MỚI', href: '/new-arrivals' },
   { label: 'NAM', href: '#' },
   { label: 'NỮ', href: '#' },
   { label: 'TRẺ EM', href: '#' },
