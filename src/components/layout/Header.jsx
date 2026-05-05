@@ -3,24 +3,23 @@ import './Header.css';
 
 /* ── Nav data ──────────────────────────────────────────────── */
 const sportsCategories = [
-  'Pickleball',
-  'Cầu lông',
-  'Bóng đá',
-  'Bóng chuyền',
-  'Bóng bàn',
-  'Tennis',
-  'Badminton',
-  'Bóng rổ',
+  { label: 'Pickleball', href: '/sport/pickleball' },
+  { label: 'Cầu lông',   href: '/sport/cau-long' },
+  { label: 'Bóng đá',    href: '/sport/bong-da' },
+  { label: 'Chạy bộ',    href: '/sport/chay-bo' },
+  { label: 'Tennis',     href: '/sport/tennis' },
+  { label: 'Bóng rổ',    href: '/sport/bong-ro' },
+  { label: 'Golf',       href: '/sport/golf' },
 ];
 
 const navLinks = [
   { label: 'THƯƠNG HIỆU', href: '#' },
   // MÔN THỂ THAO is the dropdown — inserted inline below
   { label: 'SẢN PHẨM MỚI', href: '/new-arrivals' },
-  { label: 'NAM', href: '#' },
-  { label: 'NỮ', href: '#' },
-  { label: 'TRẺ EM', href: '#' },
-  { label: 'OUTLET', href: '#', highlight: true },
+  { label: 'NAM', href: '/nam' },
+  { label: 'NỮ', href: '/nu' },
+  { label: 'TRẺ EM', href: '/tre-em' },
+  { label: 'OUTLET', href: '/outlet', highlight: true },
   { label: 'CỬA HÀNG', href: '#' },
 ];
 
@@ -28,10 +27,10 @@ const mobileNavLinks = [
   { label: 'THƯƠNG HIỆU', href: '#' },
   { label: 'MÔN THỂ THAO', href: '#' },
   { label: 'SẢN PHẨM MỚI', href: '/new-arrivals' },
-  { label: 'NAM', href: '#' },
-  { label: 'NỮ', href: '#' },
-  { label: 'TRẺ EM', href: '#' },
-  { label: 'OUTLET', href: '#', highlight: true },
+  { label: 'NAM', href: '/nam' },
+  { label: 'NỮ', href: '/nu' },
+  { label: 'TRẺ EM', href: '/tre-em' },
+  { label: 'OUTLET', href: '/outlet', highlight: true },
   { label: 'CỬA HÀNG', href: '#' },
 ];
 
@@ -124,14 +123,14 @@ export default function Header() {
                 <CaretDown />
               </a>
               <ul className="dropdown-menu" role="menu">
-                {sportsCategories.map((cat, i) => (
-                  <li key={i} role="none">
+                {sportsCategories.map((cat) => (
+                  <li key={cat.href} role="none">
                     <a
-                      href={`#${cat.toLowerCase().replace(/\s+/g, '-')}`}
+                      href={cat.href}
                       role="menuitem"
                       className="dropdown-item"
                     >
-                      {cat}
+                      {cat.label}
                     </a>
                   </li>
                 ))}
@@ -219,15 +218,15 @@ export default function Header() {
 
         <div className="mobile-nav-group">
           <span className="mobile-nav-item mobile-nav-group-title">MÔN THỂ THAO</span>
-          {sportsCategories.map((cat, i) => (
+          {sportsCategories.map((cat) => (
             <a
-              key={i}
-              href={`#${cat.toLowerCase().replace(/\s+/g, '-')}`}
+              key={cat.href}
+              href={cat.href}
               className="mobile-nav-sub"
               onClick={() => setIsMobileMenuOpen(false)}
               tabIndex={isMobileMenuOpen ? 0 : -1}
             >
-              {cat}
+              {cat.label}
             </a>
           ))}
         </div>

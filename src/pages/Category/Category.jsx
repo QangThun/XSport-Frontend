@@ -206,7 +206,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 }
 
 /* ── CategoryPage ───────────────────────────────────────────── */
-export default function CategoryPage() {
+export default function CategoryPage({ categoryType = 'all', categoryValue = '', pageTitle = 'SẢN PHẨM' }) {
   const [filters, setFilters] = useState({
     brands: [],
     productLines: [],
@@ -262,7 +262,19 @@ export default function CategoryPage() {
 
   /* Filter + sort logic */
   const filteredProducts = useMemo(() => {
+    /* Step 1: Pre-filter by category route */
     let result = [...categoryProducts];
+    if (categoryType === 'gender') {
+      result = result.filter((p) => p.gender === categoryValue);
+    } else if (categoryType === 'sport') {
+      result = result.filter((p) => p.sportType === categoryValue);
+    } else if (categoryType === 'status' && categoryValue === 'new') {
+      result = result.filter((p) => p.isNew);
+    } else if (categoryType === 'status' && categoryValue === 'outlet') {
+      result = result.filter((p) => p.isOutlet);
+    }
+
+    /* Step 2: Apply sidebar filters */
 
     if (filters.brands.length) {
       result = result.filter((p) =>
@@ -309,7 +321,7 @@ export default function CategoryPage() {
       result = [...result].sort((a, b) => a.name.localeCompare(b.name, 'vi'));
 
     return result;
-  }, [filters, sortType]);
+  }, [filters, sortType, categoryType, categoryValue]);
 
   const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
   const paginatedProducts = filteredProducts.slice(
@@ -332,14 +344,14 @@ export default function CategoryPage() {
             Trang chủ
           </Link>
           <span className="cp-breadcrumb__sep" aria-hidden="true"> / </span>
-          <span className="cp-breadcrumb__current">NEW ARRIVALS</span>
+          <span className="cp-breadcrumb__current">{pageTitle}</span>
         </nav>
       </div>
 
       {/* ── Page header ─── */}
       <div className="cp-container">
         <div className="cp-head">
-          <h1 className="cp-title">NEW ARRIVALS</h1>
+          <h1 className="cp-title">{pageTitle}</h1>
           <div className="cp-sort">
             <label htmlFor="cp-sort-select" className="cp-sort__label">
               Sắp xếp:
