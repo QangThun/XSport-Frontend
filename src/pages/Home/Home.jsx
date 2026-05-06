@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import './Home.css'
 import {
   heroSlides,
@@ -52,10 +53,29 @@ const BoltIcon = () => (
 /* ─────────────────────────────────────────────
    PRODUCT CARD — Dual Actions (New Arrivals / Trending)
 ───────────────────────────────────────────── */
-function ProductCard({ brand, name, price, image, dotColor, href }) {
+function ProductCard({ id, brand, name, price, image, dotColor }) {
+  const productLink = `/product/${id}`
+
+  const handleAddToCart = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const cartItem = {
+      id,
+      cartId: Date.now(),
+      name,
+      brand,
+      price,
+      image,
+      quantity: 1,
+    }
+    const existing = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]')
+    localStorage.setItem('maxxsport_cart', JSON.stringify([...existing, cartItem]))
+    alert(`Đã thêm "${name}" vào giỏ hàng!`)
+  }
+
   return (
     <div className="product-card">
-      <a className="product-card__link" href={href || '#redirect'} aria-label={`${brand} — ${name}`}>
+      <Link className="product-card__link" to={productLink} aria-label={`${brand} — ${name}`}>
         <div className="product-card__img-wrap">
           <img src={image} alt={name} className="product-card__img" loading="lazy" />
         </div>
@@ -69,22 +89,22 @@ function ProductCard({ brand, name, price, image, dotColor, href }) {
             aria-label={`Màu sắc: ${dotColor}`}
           />
         </div>
-      </a>
+      </Link>
       <div className="action-buttons">
         <button
           className="action-btn action-btn--ghost"
-          onClick={(e) => { e.preventDefault(); alert('Đã thêm sản phẩm ' + name + ' vào giỏ hàng!'); }}
+          onClick={handleAddToCart}
           aria-label={`Thêm ${name} vào giỏ hàng`}
         >
           <CartIcon /> Thêm vào giỏ
         </button>
-        <button
+        <Link
           className="action-btn action-btn--primary"
-          onClick={(e) => { e.preventDefault(); alert('Chuyển hướng đến trang Thanh toán cho ' + name); }}
+          to={productLink}
           aria-label={`Mua ngay ${name}`}
         >
           <BoltIcon /> Mua ngay
-        </button>
+        </Link>
       </div>
     </div>
   )
@@ -93,10 +113,29 @@ function ProductCard({ brand, name, price, image, dotColor, href }) {
 /* ─────────────────────────────────────────────
    SALE PRODUCT CARD — Dual Actions (BatMood section)
 ───────────────────────────────────────────── */
-function SaleProductCard({ brand, name, currentPrice, originalPrice, discount, image, dotColor, href }) {
+function SaleProductCard({ id, brand, name, currentPrice, originalPrice, discount, image, dotColor }) {
+  const productLink = `/product/${id}`
+
+  const handleAddToCart = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const cartItem = {
+      id,
+      cartId: Date.now(),
+      name,
+      brand,
+      price: currentPrice,
+      image,
+      quantity: 1,
+    }
+    const existing = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]')
+    localStorage.setItem('maxxsport_cart', JSON.stringify([...existing, cartItem]))
+    alert(`Đã thêm "${name}" vào giỏ hàng!`)
+  }
+
   return (
     <div className="product-card product-card--sale">
-      <a className="product-card__link" href={href || '#redirect'} aria-label={`${brand} — ${name}`}>
+      <Link className="product-card__link" to={productLink} aria-label={`${brand} — ${name}`}>
         <div className="product-card__img-wrap">
           <img src={image} alt={name} className="product-card__img" loading="lazy" />
           {discount && <span className="product-card__discount-badge">{discount}</span>}
@@ -114,22 +153,22 @@ function SaleProductCard({ brand, name, currentPrice, originalPrice, discount, i
             aria-label={`Màu sắc: ${dotColor}`}
           />
         </div>
-      </a>
+      </Link>
       <div className="action-buttons">
         <button
           className="action-btn action-btn--ghost"
-          onClick={(e) => { e.preventDefault(); alert('Đã thêm sản phẩm ' + name + ' vào giỏ hàng!'); }}
+          onClick={handleAddToCart}
           aria-label={`Thêm ${name} vào giỏ hàng`}
         >
           <CartIcon /> Thêm vào giỏ
         </button>
-        <button
+        <Link
           className="action-btn action-btn--primary"
-          onClick={(e) => { e.preventDefault(); alert('Chuyển hướng đến trang Thanh toán cho ' + name); }}
+          to={productLink}
           aria-label={`Mua ngay ${name}`}
         >
           <BoltIcon /> Mua ngay
-        </button>
+        </Link>
       </div>
     </div>
   )
@@ -141,9 +180,9 @@ function SaleProductCard({ brand, name, currentPrice, originalPrice, discount, i
 function ViewAllBtn({ href, label = 'Xem tất cả' }) {
   return (
     <div className="view-all-wrap">
-      <a href={href} className="view-all-btn">
+      <Link to={href || '/'} className="view-all-btn">
         {label} <ArrowRight />
-      </a>
+      </Link>
     </div>
   )
 }
@@ -193,9 +232,9 @@ function HeroSlider() {
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
         {heroSlides.map((slide) => (
-          <a key={slide.id} href={slide.href || '#redirect'} className="hero-slider__slide">
+          <Link key={slide.id} to={slide.href || '/'} className="hero-slider__slide">
             <img src={slide.image} alt={slide.alt} className="hero-slider__img" />
-          </a>
+          </Link>
         ))}
       </div>
 
@@ -241,13 +280,13 @@ function LookbookBanners() {
     <section className="lookbooks" aria-label="Bộ sưu tập nổi bật">
       <div className="lookbooks__inner">
         {lookbookBanners.map((banner) => (
-          <a key={banner.id} href={banner.href || '#redirect'} className="lookbooks__link">
+          <Link key={banner.id} to={banner.href || '/'} className="lookbooks__link">
             <img
               src={banner.image}
               alt={banner.alt}
               className="lookbooks__img"
             />
-          </a>
+          </Link>
         ))}
       </div>
     </section>
@@ -299,13 +338,13 @@ function TennisPromoBanner() {
   return (
     <section className="promo-banner" aria-label="Giảm tới 30% giày Tennis / Pickleball">
       <div className="section-container">
-        <a href="/tennis-pickleball" className="promo-banner__link">
+        <Link to="/sport/tennis" className="promo-banner__link">
           <img
             src="/assets/banners/tennis-promo.png"
             alt="Giảm tới 30% — Giày, phụ kiện Tennis/Pickleball chính hãng tại Maxx Sport"
             className="promo-banner__img"
           />
-        </a>
+        </Link>
       </div>
     </section>
   )
@@ -362,7 +401,7 @@ function SportCategories() {
       <div className="section-container">
         <div className="sport-cats__grid">
           {sportCategories.map((cat) => (
-            <a key={cat.id} href={cat.href || '#redirect'} className="sport-cat" aria-label={cat.name}>
+            <Link key={cat.id} to={`/sport/${cat.id}`} className="sport-cat" aria-label={cat.name}>
               <img
                 src={cat.image}
                 alt={cat.name}
@@ -374,7 +413,7 @@ function SportCategories() {
                   {cat.name} <span className="sport-cat__play" aria-hidden="true">▶</span>
                 </span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -430,13 +469,13 @@ function StoreNearby() {
         <h2 id="store-title" className="section-title store-nearby__title">
           MUA SẮM TẠI CỬA HÀNG GẦN BẠN
         </h2>
-        <a href="/he-thong-cua-hang" className="store-nearby__link">
+        <Link to="/category" className="store-nearby__link">
           <img
             src="/assets/banners/stores-nearby.svg"
             alt="Hệ thống cửa hàng Maxx Sport trên toàn quốc"
             className="store-nearby__img"
           />
-        </a>
+        </Link>
       </div>
     </section>
   )
