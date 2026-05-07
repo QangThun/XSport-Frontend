@@ -65,6 +65,42 @@ const ShoppingBagIcon = () => (
     <line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
   </svg>
 );
+const PlusIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+  </svg>
+);
+const TrashIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+  </svg>
+);
+const StarIcon = ({ filled }) => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill={filled ? '#ffb800' : 'none'} stroke={filled ? '#ffb800' : 'currentColor'}
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+const PhoneSmIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+  </svg>
+);
+const HomeSmIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
+  </svg>
+);
+const CloseModalIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
 const LockIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -204,6 +240,62 @@ export default function Account() {
   const [pwForm, setPwForm] = useState({ current: '', newPw: '', confirm: '' });
   const [pwMsg, setPwMsg] = useState({ type: '', text: '' });
   const [showPw, setShowPw] = useState({ current: false, newPw: false, confirm: false });
+
+  /* ── Address Book state ── */
+  const ADDR_KEY = `maxxsport_addresses_${user.email || 'guest'}`;
+  const [addresses, setAddresses] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(ADDR_KEY)) || []; } catch { return []; }
+  });
+  const [showAddrForm, setShowAddrForm] = useState(false);
+  const [editingAddr, setEditingAddr] = useState(null);
+  const emptyAddr = { label: '', name: '', phone: '', city: '', district: '', ward: '', street: '', isDefault: false };
+  const [addrForm, setAddrForm] = useState({ ...emptyAddr });
+  const [addrErrors, setAddrErrors] = useState({});
+  const [addrMsg, setAddrMsg] = useState('');
+
+  const saveAddresses = (list) => { setAddresses(list); localStorage.setItem(ADDR_KEY, JSON.stringify(list)); };
+
+  const openAddrAdd = () => { setEditingAddr(null); setAddrForm({ ...emptyAddr, isDefault: addresses.length === 0 }); setAddrErrors({}); setShowAddrForm(true); };
+  const openAddrEdit = (addr) => { setEditingAddr(addr.id); setAddrForm({ ...addr }); setAddrErrors({}); setShowAddrForm(true); };
+  const closeAddrForm = () => { setShowAddrForm(false); setEditingAddr(null); setAddrErrors({}); };
+
+  const validateAddr = () => {
+    const e = {};
+    if (!addrForm.name.trim()) e.name = 'Bắt buộc';
+    if (!addrForm.phone.trim()) e.phone = 'Bắt buộc';
+    else if (!/^[0-9]{9,11}$/.test(addrForm.phone.replace(/\s/g, ''))) e.phone = 'Không hợp lệ';
+    if (!addrForm.city.trim()) e.city = 'Bắt buộc';
+    if (!addrForm.street.trim()) e.street = 'Bắt buộc';
+    setAddrErrors(e); return Object.keys(e).length === 0;
+  };
+
+  const handleSaveAddr = () => {
+    if (!validateAddr()) return;
+    let list;
+    if (editingAddr) {
+      list = addresses.map(a => a.id === editingAddr ? { ...addrForm, id: editingAddr } : a);
+    } else {
+      list = [...addresses, { ...addrForm, id: Date.now().toString() }];
+    }
+    if (addrForm.isDefault) list = list.map(a => ({ ...a, isDefault: a.id === (editingAddr || list[list.length - 1].id) }));
+    saveAddresses(list); closeAddrForm();
+    setAddrMsg(editingAddr ? 'Cập nhật địa chỉ thành công!' : 'Thêm địa chỉ thành công!');
+    setTimeout(() => setAddrMsg(''), 3000);
+  };
+
+  const handleDeleteAddr = (id) => {
+    const list = addresses.filter(a => a.id !== id);
+    if (list.length > 0 && !list.some(a => a.isDefault)) list[0].isDefault = true;
+    saveAddresses(list);
+    setAddrMsg('Đã xóa địa chỉ.'); setTimeout(() => setAddrMsg(''), 3000);
+  };
+
+  const handleSetDefault = (id) => {
+    const list = addresses.map(a => ({ ...a, isDefault: a.id === id }));
+    saveAddresses(list);
+  };
+
+  const PROVINCES = ['TP. Hồ Chí Minh','Hà Nội','Đà Nẵng','Hải Phòng','Cần Thơ','Bình Dương','Đồng Nai','Khánh Hòa','Lâm Đồng','Thừa Thiên Huế','Quảng Ninh','Bà Rịa - Vũng Tàu','Long An','An Giang','Nghệ An'];
 
   /* ── Init edit form when user changes ── */
   useEffect(() => {
@@ -482,15 +574,113 @@ export default function Account() {
               <section className="acc-section" id="acc-addresses-section">
                 <div className="acc-section__header">
                   <h2 className="acc-section__title">Sổ địa chỉ</h2>
+                  <div className="acc-addr-header-right">
+                    <span className="acc-section__count">{addresses.length} địa chỉ</span>
+                    <button type="button" className="acc-btn acc-btn--primary acc-btn--sm" onClick={openAddrAdd} id="add-addr-btn">
+                      <PlusIcon /> Thêm địa chỉ
+                    </button>
+                  </div>
                 </div>
-                <div className="acc-empty">
-                  <MapPinIcon />
-                  <h3>Chưa có địa chỉ nào</h3>
-                  <p>Thêm địa chỉ giao hàng để đặt hàng nhanh hơn.</p>
-                  <button type="button" className="acc-btn acc-btn--primary" onClick={() => alert('Tính năng sẽ được cập nhật sớm!')}>
-                    Thêm địa chỉ mới
-                  </button>
-                </div>
+
+                {addrMsg && <div className="acc-save-msg"><CheckIcon /> {addrMsg}</div>}
+
+                {/* ── Address Form Modal ── */}
+                {showAddrForm && (
+                  <div className="acc-addr-overlay" onClick={(e) => { if (e.target === e.currentTarget) closeAddrForm(); }}>
+                    <div className="acc-addr-modal">
+                      <div className="acc-addr-modal__head">
+                        <h3>{editingAddr ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}</h3>
+                        <button type="button" className="acc-addr-modal__close" onClick={closeAddrForm}><CloseModalIcon /></button>
+                      </div>
+                      <div className="acc-addr-modal__body">
+                        <div className="acc-form__field">
+                          <label className="acc-form__label">Tên gợi nhớ</label>
+                          <input className="acc-form__input" placeholder='VD: Nhà riêng, Văn phòng…' value={addrForm.label} onChange={e => setAddrForm(p => ({ ...p, label: e.target.value }))} />
+                        </div>
+                        <div className="acc-addr-row">
+                          <div className="acc-form__field">
+                            <label className="acc-form__label">Họ tên <span className="acc-req">*</span></label>
+                            <input className={`acc-form__input${addrErrors.name ? ' acc-form__input--err' : ''}`} value={addrForm.name} onChange={e => setAddrForm(p => ({ ...p, name: e.target.value }))} />
+                            {addrErrors.name && <span className="acc-addr-err">{addrErrors.name}</span>}
+                          </div>
+                          <div className="acc-form__field">
+                            <label className="acc-form__label">Số điện thoại <span className="acc-req">*</span></label>
+                            <input className={`acc-form__input${addrErrors.phone ? ' acc-form__input--err' : ''}`} value={addrForm.phone} onChange={e => setAddrForm(p => ({ ...p, phone: e.target.value }))} />
+                            {addrErrors.phone && <span className="acc-addr-err">{addrErrors.phone}</span>}
+                          </div>
+                        </div>
+                        <div className="acc-addr-row">
+                          <div className="acc-form__field">
+                            <label className="acc-form__label">Tỉnh/Thành phố <span className="acc-req">*</span></label>
+                            <select className={`acc-form__input${addrErrors.city ? ' acc-form__input--err' : ''}`} value={addrForm.city} onChange={e => setAddrForm(p => ({ ...p, city: e.target.value }))}>
+                              <option value="">Chọn tỉnh/thành phố</option>
+                              {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
+                            </select>
+                            {addrErrors.city && <span className="acc-addr-err">{addrErrors.city}</span>}
+                          </div>
+                          <div className="acc-form__field">
+                            <label className="acc-form__label">Quận/Huyện</label>
+                            <input className="acc-form__input" value={addrForm.district} onChange={e => setAddrForm(p => ({ ...p, district: e.target.value }))} />
+                          </div>
+                        </div>
+                        <div className="acc-form__field">
+                          <label className="acc-form__label">Phường/Xã</label>
+                          <input className="acc-form__input" value={addrForm.ward} onChange={e => setAddrForm(p => ({ ...p, ward: e.target.value }))} />
+                        </div>
+                        <div className="acc-form__field">
+                          <label className="acc-form__label">Địa chỉ cụ thể <span className="acc-req">*</span></label>
+                          <input className={`acc-form__input${addrErrors.street ? ' acc-form__input--err' : ''}`} placeholder="Số nhà, tên đường…" value={addrForm.street} onChange={e => setAddrForm(p => ({ ...p, street: e.target.value }))} />
+                          {addrErrors.street && <span className="acc-addr-err">{addrErrors.street}</span>}
+                        </div>
+                        <label className="acc-addr-default-check">
+                          <input type="checkbox" checked={addrForm.isDefault} onChange={e => setAddrForm(p => ({ ...p, isDefault: e.target.checked }))} />
+                          <span>Đặt làm địa chỉ mặc định</span>
+                        </label>
+                      </div>
+                      <div className="acc-addr-modal__foot">
+                        <button type="button" className="acc-btn acc-btn--ghost" onClick={closeAddrForm}>Hủy</button>
+                        <button type="button" className="acc-btn acc-btn--primary" onClick={handleSaveAddr}><SaveIcon /> {editingAddr ? 'Cập nhật' : 'Lưu địa chỉ'}</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── Address Cards ── */}
+                {addresses.length === 0 ? (
+                  <div className="acc-empty">
+                    <MapPinIcon />
+                    <h3>Chưa có địa chỉ nào</h3>
+                    <p>Thêm địa chỉ giao hàng để đặt hàng nhanh hơn.</p>
+                    <button type="button" className="acc-btn acc-btn--primary" onClick={openAddrAdd}>Thêm địa chỉ mới</button>
+                  </div>
+                ) : (
+                  <div className="acc-addr-list">
+                    {addresses.map(addr => (
+                      <div className={`acc-addr-card${addr.isDefault ? ' acc-addr-card--default' : ''}`} key={addr.id}>
+                        <div className="acc-addr-card__top">
+                          <div className="acc-addr-card__label-row">
+                            <span className="acc-addr-card__label">{addr.label || 'Địa chỉ'}</span>
+                            {addr.isDefault && <span className="acc-addr-badge">Mặc định</span>}
+                          </div>
+                          <div className="acc-addr-card__actions">
+                            <button type="button" className="acc-addr-action" title="Chỉnh sửa" onClick={() => openAddrEdit(addr)}><EditIcon /></button>
+                            <button type="button" className="acc-addr-action acc-addr-action--del" title="Xóa" onClick={() => handleDeleteAddr(addr.id)}><TrashIcon /></button>
+                          </div>
+                        </div>
+                        <div className="acc-addr-card__body">
+                          <div className="acc-addr-card__row"><strong>{addr.name}</strong></div>
+                          <div className="acc-addr-card__row acc-addr-card__row--meta"><PhoneSmIcon /> {addr.phone}</div>
+                          <div className="acc-addr-card__row acc-addr-card__row--meta"><HomeSmIcon /> {[addr.street, addr.ward, addr.district, addr.city].filter(Boolean).join(', ')}</div>
+                        </div>
+                        {!addr.isDefault && (
+                          <button type="button" className="acc-addr-card__set-default" onClick={() => handleSetDefault(addr.id)}>
+                            <StarIcon filled={false} /> Đặt làm mặc định
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </section>
             )}
 
