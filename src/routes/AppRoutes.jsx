@@ -5,6 +5,9 @@ import Cart from '../pages/Cart/Cart';
 import Payment from '../pages/Payment/Payment';
 import PaymentManagement from '../pages/PaymentManagement/PaymentManagement';
 import Auth from '../pages/Auth/Auth';
+import Checkout from '../pages/Checkout/Checkout';
+import Success from '../pages/Success/Success';
+import Account from '../pages/Account/Account';
 import CategoryPage from '../pages/Category/Category';
 import NotFound from '../pages/NotFound';
 import MainLayout from '../components/layout/MainLayout';
@@ -20,6 +23,9 @@ export default function AppRoutes() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/payment-management" element={<PaymentManagement />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/account" element={<Account />} />
 
           {/* ── Universal Category Routes ─────────────────────── */}
           <Route path="/new-arrivals" element={<CategoryPage categoryType="status" categoryValue="new" pageTitle="SẢN PHẨM MỚI" />} />

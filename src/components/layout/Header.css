@@ -358,6 +358,227 @@
 }
 
 /* ================================================================
+   USER DROPDOWN (Logged-in state)
+   ================================================================ */
+.user-dropdown-wrap {
+  position: relative;
+}
+
+.user-icon-link--logged {
+  position: relative;
+}
+
+.user-logged-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background: #28a745;
+  border-radius: 50%;
+  border: 2px solid var(--bg-dark);
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+  min-width: 260px;
+  padding: 0;
+  z-index: 1000;
+  overflow: hidden;
+  animation: userDropIn 0.2s ease;
+}
+
+@keyframes userDropIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.user-dropdown__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  background: #fafafa;
+}
+
+.user-dropdown__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #000000;
+  color: #ffb800;
+  font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-dropdown__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.user-dropdown__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #000000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-dropdown__email {
+  font-size: 12px;
+  color: #888888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-dropdown__role {
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffb800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-dropdown__divider {
+  height: 1px;
+  background: #f0f0f0;
+}
+
+.user-dropdown__logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  background: none;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
+  color: #555555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.user-dropdown__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 20px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
+  color: #555555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.user-dropdown__link:hover {
+  background: #fffdf5;
+  color: #000;
+}
+.user-dropdown__link svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+.user-dropdown__logout:hover {
+  background: #fff0f0;
+  color: #dc2626;
+}
+
+.user-dropdown__logout svg {
+  flex-shrink: 0;
+}
+
+/* ── Mobile user bar ─────────────────────────────────────── */
+.mobile-nav-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.mobile-nav-user__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffb800;
+  color: #000000;
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mobile-nav-user__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.mobile-nav-user__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.mobile-nav-user__email {
+  font-size: 12px;
+  color: #999999;
+}
+
+/* ── Mobile logout button ────────────────────────────────── */
+.mobile-nav-logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: calc(100% - 40px);
+  margin: 16px 20px 0;
+  padding: 12px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: none;
+  font-family: var(--font-family);
+  font-size: 13px;
+  font-weight: 600;
+  color: #cccccc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-logout:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.mobile-nav-logout svg {
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+/* ================================================================
    RESPONSIVE ENGINE
    ================================================================ */
 

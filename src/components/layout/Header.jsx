@@ -13,25 +13,24 @@ const sportsCategories = [
 ];
 
 const navLinks = [
-  { label: 'THƯƠNG HIỆU', href: '#' },
-  // MÔN THỂ THAO is the dropdown — inserted inline below
+  { label: 'THƯƠNG HIỆU', href: '/category' },
   { label: 'SẢN PHẨM MỚI', href: '/new-arrivals' },
   { label: 'NAM', href: '/nam' },
   { label: 'NỮ', href: '/nu' },
   { label: 'TRẺ EM', href: '/tre-em' },
   { label: 'OUTLET', href: '/outlet', highlight: true },
-  { label: 'CỬA HÀNG', href: '#' },
+  { label: 'CỬA HÀNG', href: '/category' },
 ];
 
 const mobileNavLinks = [
-  { label: 'THƯƠNG HIỆU', href: '#' },
-  { label: 'MÔN THỂ THAO', href: '#' },
+  { label: 'THƯƠNG HIỆU', href: '/category' },
+  { label: 'MÔN THỂ THAO', href: '/category' },
   { label: 'SẢN PHẨM MỚI', href: '/new-arrivals' },
   { label: 'NAM', href: '/nam' },
   { label: 'NỮ', href: '/nu' },
   { label: 'TRẺ EM', href: '/tre-em' },
   { label: 'OUTLET', href: '/outlet', highlight: true },
-  { label: 'CỬA HÀNG', href: '#' },
+  { label: 'CỬA HÀNG', href: '/category' },
 ];
 
 /* ── Inline SVG icons ──────────────────────────────────────── */
@@ -86,10 +85,29 @@ const CaretDown = () => (
   </svg>
 );
 
+const LogoutIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+    <polyline points="16 17 21 12 16 7" />
+    <line x1="21" y1="12" x2="9" y2="12" />
+  </svg>
+);
+
 /* ── Component ──────────────────────────────────────────────── */
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  /* ── Load user from localStorage on mount ──────────────────── */
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('maxxsport_user');
+      if (saved) setCurrentUser(JSON.parse(saved));
+    } catch { /* ignore */ }
+  }, []);
 
   /* ── Real-time cart badge sync ──────────────────────────────── */
   useEffect(() => {
@@ -110,6 +128,36 @@ export default function Header() {
       window.removeEventListener('storage', updateBadge);
     };
   }, []);
+
+  /* ── Close user dropdown on outside click ─────────────────── */
+  useEffect(() => {
+    if (!userDropdownOpen) return;
+    const handleClick = (e) => {
+      if (!e.target.closest('.user-dropdown-wrap')) {
+        setUserDropdownOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, [userDropdownOpen]);
+
+  /* ── Logout handler: backup cart → clear → remove user ────── */
+  const handleLogout = () => {
+    if (currentUser?.email) {
+      try {
+        const currentCart = localStorage.getItem('maxxsport_cart') || '[]';
+        localStorage.setItem(`saved_cart_${currentUser.email}`, currentCart);
+      } catch { /* ignore */ }
+    }
+
+    localStorage.setItem('maxxsport_cart', '[]');
+    localStorage.removeItem('maxxsport_user');
+    window.dispatchEvent(new Event('cartUpdated'));
+
+    setCurrentUser(null);
+    setUserDropdownOpen(false);
+    window.location.href = '/';
+  };
 
   return (
     <header className="header-outer">
@@ -133,12 +181,12 @@ export default function Header() {
 
             {/* THƯƠNG HIỆU */}
             <li className="nav-list-item">
-              <a href="#" className="nav-link">THƯƠNG HIỆU</a>
+              <a href="/category" className="nav-link">THƯƠNG HIỆU</a>
             </li>
 
             {/* MÔN THỂ THAO — dropdown */}
             <li className="nav-list-item nav-has-dropdown">
-              <a href="#" className="nav-link dropdown-trigger">
+              <a href="/category" className="nav-link dropdown-trigger">
                 MÔN THỂ THAO
                 <CaretDown />
               </a>
@@ -187,10 +235,57 @@ export default function Header() {
             </span>
           </div>
 
-          {/* User — direct link to Auth page */}
-          <a href="/auth" className="icon-btn user-icon-link" title="Tài khoản" aria-label="Tài khoản">
-            <UserIcon />
-          </a>
+          {/* User — Auth-aware dropdown or link */}
+          {currentUser ? (
+            <div className="user-dropdown-wrap">
+              <button
+                type="button"
+                className="icon-btn user-icon-link user-icon-link--logged"
+                title={`Xin chào, ${currentUser.name}`}
+                aria-label={`Menu tài khoản — ${currentUser.name}`}
+                aria-expanded={userDropdownOpen}
+                onClick={() => setUserDropdownOpen((v) => !v)}
+                id="user-menu-trigger"
+              >
+                <UserIcon />
+                <span className="user-logged-dot" aria-hidden="true" />
+              </button>
+
+              {userDropdownOpen && (
+                <div className="user-dropdown" id="user-dropdown-menu">
+                  <div className="user-dropdown__header">
+                    <div className="user-dropdown__avatar">
+                      {currentUser.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="user-dropdown__info">
+                      <span className="user-dropdown__name">{currentUser.name}</span>
+                      <span className="user-dropdown__email">{currentUser.email}</span>
+                      <span className="user-dropdown__role">{currentUser.role}</span>
+                    </div>
+                  </div>
+                  <div className="user-dropdown__divider" />
+                  <a href="/account" className="user-dropdown__link" id="dropdown-account-link">
+                    <UserIcon />
+                    Tài khoản của tôi
+                  </a>
+                  <div className="user-dropdown__divider" />
+                  <button
+                    type="button"
+                    className="user-dropdown__logout"
+                    onClick={handleLogout}
+                    id="logout-btn"
+                  >
+                    <LogoutIcon />
+                    Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <a href="/auth" className="icon-btn user-icon-link" title="Tài khoản" aria-label="Tài khoản">
+              <UserIcon />
+            </a>
+          )}
 
           {/* Cart — links to /cart */}
           <a
@@ -225,6 +320,19 @@ export default function Header() {
         aria-label="Mobile menu"
         aria-hidden={!isMobileMenuOpen}
       >
+        {/* Mobile user info bar */}
+        {currentUser && (
+          <div className="mobile-nav-user">
+            <div className="mobile-nav-user__avatar">
+              {currentUser.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="mobile-nav-user__info">
+              <span className="mobile-nav-user__name">{currentUser.name}</span>
+              <span className="mobile-nav-user__email">{currentUser.email}</span>
+            </div>
+          </div>
+        )}
+
         {mobileNavLinks.map((link) => (
           <a
             key={link.label}
@@ -251,6 +359,18 @@ export default function Header() {
             </a>
           ))}
         </div>
+
+        {/* Mobile logout */}
+        {currentUser && (
+          <button
+            type="button"
+            className="mobile-nav-logout"
+            onClick={handleLogout}
+          >
+            <LogoutIcon />
+            Đăng xuất
+          </button>
+        )}
       </nav>
     </header>
   );

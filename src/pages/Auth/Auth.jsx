@@ -117,6 +117,47 @@ export default function Auth() {
     setSuccess('');
   };
 
+  /* ── Cart Merge Helper: merge guest cart with user's saved cart ── */
+  const mergeCartsOnLogin = (userEmail) => {
+    try {
+      const guestCart = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]');
+      const savedCart = JSON.parse(localStorage.getItem(`saved_cart_${userEmail}`) || '[]');
+
+      /* Build a map keyed by id+size+color for deduplication */
+      const cartMap = new Map();
+      const itemKey = (item) =>
+        `${item.id}_${item.selectedSize || ''}_${item.selectedColor || ''}`;
+
+      /* Add saved cart items first */
+      savedCart.forEach((item) => {
+        const key = itemKey(item);
+        if (cartMap.has(key)) {
+          const existing = cartMap.get(key);
+          existing.quantity = (existing.quantity || 1) + (item.quantity || 1);
+        } else {
+          cartMap.set(key, { ...item, quantity: item.quantity || 1 });
+        }
+      });
+
+      /* Merge guest cart items (sum quantities for duplicates) */
+      guestCart.forEach((item) => {
+        const key = itemKey(item);
+        if (cartMap.has(key)) {
+          const existing = cartMap.get(key);
+          existing.quantity = (existing.quantity || 1) + (item.quantity || 1);
+        } else {
+          cartMap.set(key, { ...item, quantity: item.quantity || 1 });
+        }
+      });
+
+      const mergedCart = Array.from(cartMap.values());
+      localStorage.setItem('maxxsport_cart', JSON.stringify(mergedCart));
+      window.dispatchEvent(new Event('cartUpdated'));
+    } catch {
+      /* If merge fails, keep current cart as-is */
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
@@ -131,6 +172,10 @@ export default function Auth() {
         /* Persist user (without password) to localStorage */
         const persistedUser = { email: user.email, name: user.name, role: user.role };
         localStorage.setItem('maxxsport_user', JSON.stringify(persistedUser));
+
+        /* ── CART MERGE: guest cart ↔ user's saved cart ── */
+        mergeCartsOnLogin(user.email);
+
         setCurrentUser(persistedUser);
         alert('Đăng nhập thành công! Quyền: ' + user.role + ' — Xin chào, ' + user.name);
         window.location.href = '/';
@@ -374,7 +419,7 @@ export default function Auth() {
             {/* Quên mật khẩu — login only */}
             {isLoginView && (
               <div className="auth-forgot-row">
-                <a href="#forgot" className="auth-forgot-link" id="forgot-password-link">
+                <a href="/auth" className="auth-forgot-link" id="forgot-password-link">
                   Quên mật khẩu? Nhấn vào đây
                 </a>
               </div>
