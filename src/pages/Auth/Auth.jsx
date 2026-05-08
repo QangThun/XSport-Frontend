@@ -6,7 +6,7 @@ import './Auth.css';
 ───────────────────────────────────────────── */
 const mockUsers = [
   { email: 'user@gmail.com', password: 'user123', role: 'CUSTOMER', name: 'Khách hàng' },
-  { email: 'admin@maxxsport.com', password: 'admin123', role: 'ADMIN', name: 'Quản trị viên' },
+  { email: 'admin@xsport.com', password: 'admin123', role: 'ADMIN', name: 'Quản trị viên' },
 ];
 
 /* ─────────────────────────────────────────────
@@ -69,7 +69,7 @@ export default function Auth() {
   /* ── Persisted user state (localStorage) ── */
   const [currentUser, setCurrentUser] = useState(() => {
     try {
-      const saved = localStorage.getItem('maxxsport_user');
+      const saved = localStorage.getItem('xsport_user');
       return saved ? JSON.parse(saved) : null;
     } catch { return null; }
   });
@@ -77,9 +77,9 @@ export default function Auth() {
   /* Sync user → localStorage */
   useEffect(() => {
     if (currentUser) {
-      localStorage.setItem('maxxsport_user', JSON.stringify(currentUser));
+      localStorage.setItem('xsport_user', JSON.stringify(currentUser));
     } else {
-      localStorage.removeItem('maxxsport_user');
+      localStorage.removeItem('xsport_user');
     }
   }, [currentUser]);
 
@@ -120,7 +120,7 @@ export default function Auth() {
   /* ── Cart Merge Helper: merge guest cart with user's saved cart ── */
   const mergeCartsOnLogin = (userEmail) => {
     try {
-      const guestCart = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]');
+      const guestCart = JSON.parse(localStorage.getItem('xsport_cart') || '[]');
       const savedCart = JSON.parse(localStorage.getItem(`saved_cart_${userEmail}`) || '[]');
 
       /* Build a map keyed by id+size+color for deduplication */
@@ -151,7 +151,7 @@ export default function Auth() {
       });
 
       const mergedCart = Array.from(cartMap.values());
-      localStorage.setItem('maxxsport_cart', JSON.stringify(mergedCart));
+      localStorage.setItem('xsport_cart', JSON.stringify(mergedCart));
       window.dispatchEvent(new Event('cartUpdated'));
     } catch {
       /* If merge fails, keep current cart as-is */
@@ -171,7 +171,7 @@ export default function Auth() {
       if (user) {
         /* Persist user (without password) to localStorage */
         const persistedUser = { email: user.email, name: user.name, role: user.role };
-        localStorage.setItem('maxxsport_user', JSON.stringify(persistedUser));
+        localStorage.setItem('xsport_user', JSON.stringify(persistedUser));
 
         /* ── CART MERGE: guest cart ↔ user's saved cart ── */
         mergeCartsOnLogin(user.email);

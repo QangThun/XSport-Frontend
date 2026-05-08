@@ -252,9 +252,9 @@ export default function Product() {
       quantity,
     };
 
-    const existingCart = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]');
+    const existingCart = JSON.parse(localStorage.getItem('xsport_cart') || '[]');
     localStorage.setItem(
-      'maxxsport_cart',
+      'xsport_cart',
       JSON.stringify([...existingCart, cartItem])
     );
     window.dispatchEvent(new Event('cartUpdated'));
@@ -315,7 +315,7 @@ export default function Product() {
 
           {/* ── LEFT: Image Gallery (Vertical thumbs + Main image) ── */}
           <div className="pd-gallery">
-            {/* Vertical thumbnails (left side, Maxxsport style) */}
+            {/* Vertical thumbnails (left side, Xsport style) */}
             {product.images.length > 1 && (
               <div className="pd-gallery__thumbs-col">
                 {product.images.map((img, index) => (
@@ -463,7 +463,7 @@ export default function Product() {
               </div>
             </div>
 
-            {/* Quantity + Add to Cart row (Maxxsport style) */}
+            {/* Quantity + Add to Cart row (Xsport style) */}
             <div className="pd-cart-row">
               <div className="pd-quantity__controls">
                 <button
@@ -594,14 +594,14 @@ export default function Product() {
             {activeTab === 'return' && (
               <div className="pd-description">
                 <h3>Chính sách đổi trả</h3>
-                <p>MAXX SPORT cam kết đổi trả miễn phí trong vòng <strong>30 ngày</strong> kể từ ngày nhận hàng nếu sản phẩm đáp ứng các điều kiện sau:</p>
+                <p>XSPORT cam kết đổi trả miễn phí trong vòng <strong>30 ngày</strong> kể từ ngày nhận hàng nếu sản phẩm đáp ứng các điều kiện sau:</p>
                 <ul>
                   <li>Sản phẩm còn nguyên tem, mác, chưa qua sử dụng.</li>
                   <li>Sản phẩm không bị hư hỏng do lỗi từ phía khách hàng.</li>
                   <li>Có hóa đơn mua hàng hoặc mã đơn hàng.</li>
                   <li>Áp dụng đổi size hoặc đổi sản phẩm cùng giá trị hoặc cao hơn (bù tiền chênh lệch).</li>
                 </ul>
-                <p>Quý khách vui lòng liên hệ hotline <strong>1900 xxxx</strong> hoặc mang sản phẩm đến cửa hàng MAXX SPORT gần nhất để được hỗ trợ.</p>
+                <p>Quý khách vui lòng liên hệ hotline <strong>1900 xxxx</strong> hoặc mang sản phẩm đến cửa hàng XSPORT gần nhất để được hỗ trợ.</p>
               </div>
             )}
             {activeTab === 'shipping' && (

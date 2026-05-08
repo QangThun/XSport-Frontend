@@ -77,7 +77,7 @@ export default function Cart() {
   /* ── Load cart from localStorage on mount ─────────────────── */
   useEffect(() => {
     try {
-      const stored = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]');
+      const stored = JSON.parse(localStorage.getItem('xsport_cart') || '[]');
       setCartItems(stored);
     } catch {
       setCartItems([]);
@@ -86,7 +86,7 @@ export default function Cart() {
 
   /* ── Persist cart to localStorage + fire global event ──────── */
   const syncToStorage = useCallback((items) => {
-    localStorage.setItem('maxxsport_cart', JSON.stringify(items));
+    localStorage.setItem('xsport_cart', JSON.stringify(items));
     window.dispatchEvent(new Event('cartUpdated'));
   }, []);
 

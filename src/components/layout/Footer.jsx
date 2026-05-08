@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="inner-container footer-grid">
         {/* Column 1 — About & contact */}
         <div className="footer-col">
-          <h4 className="footer-col-title">VỀ MAXX SPORT</h4>
+          <h4 className="footer-col-title">VỀ XSPORT</h4>
           <p className="footer-body">
             Thương hiệu thể thao hàng đầu Việt Nam, cung cấp các sản phẩm và dịch vụ thể thao cao cấp.
           </p>
@@ -33,8 +33,8 @@ export default function Footer() {
             <li className="footer-contact-item">
               <span>
                 <strong>Email:</strong>{' '}
-                <a className="footer-inline-link" href="mailto:support@maxxsport.vn">
-                  support@maxxsport.vn
+                <a className="footer-inline-link" href="mailto:support@xsport.vn">
+                  support@xsport.vn
                 </a>
               </span>
             </li>
@@ -136,7 +136,7 @@ export default function Footer() {
 
       <div className="inner-container footer-bottom">
         <p className="footer-copyright">
-          © 2015-2026 MaxxSport. All rights reserved. | MST: 0107139974
+          © 2015-2026 XSport. All rights reserved. | MST: 0107139974
         </p>
       </div>
     </footer>

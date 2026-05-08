@@ -97,7 +97,7 @@ const BookOpenIcon = () => (
 export default function Checkout() {
   /* ── Auth guard ── */
   useEffect(() => {
-    const user = localStorage.getItem('maxxsport_user');
+    const user = localStorage.getItem('xsport_user');
     if (!user) {
       window.location.href = '/auth';
     }
@@ -106,21 +106,21 @@ export default function Checkout() {
   /* ── Load user data ── */
   const [user] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('maxxsport_user')) || {};
+      return JSON.parse(localStorage.getItem('xsport_user')) || {};
     } catch { return {}; }
   });
 
   /* ── Load cart data ── */
   const [cartItems] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('maxxsport_cart') || '[]');
+      return JSON.parse(localStorage.getItem('xsport_cart') || '[]');
     } catch { return []; }
   });
 
   /* ── Load saved addresses from address book ── */
   const [savedAddresses] = useState(() => {
     try {
-      const key = `maxxsport_addresses_${user.email || 'guest'}`;
+      const key = `xsport_addresses_${user.email || 'guest'}`;
       return JSON.parse(localStorage.getItem(key)) || [];
     } catch { return []; }
   });
@@ -222,18 +222,18 @@ export default function Checkout() {
 
     // Persist order
     try {
-      const existing = JSON.parse(localStorage.getItem('maxxsport_orders') || '[]');
+      const existing = JSON.parse(localStorage.getItem('xsport_orders') || '[]');
       existing.unshift(newOrder);
-      localStorage.setItem('maxxsport_orders', JSON.stringify(existing));
+      localStorage.setItem('xsport_orders', JSON.stringify(existing));
     } catch {
-      localStorage.setItem('maxxsport_orders', JSON.stringify([newOrder]));
+      localStorage.setItem('xsport_orders', JSON.stringify([newOrder]));
     }
 
     // Store last order for Success page
-    localStorage.setItem('maxxsport_last_order', JSON.stringify(newOrder));
+    localStorage.setItem('xsport_last_order', JSON.stringify(newOrder));
 
     // Clear cart
-    localStorage.setItem('maxxsport_cart', '[]');
+    localStorage.setItem('xsport_cart', '[]');
     window.dispatchEvent(new Event('cartUpdated'));
     window.dispatchEvent(new Event('systemDataUpdated'));
   };

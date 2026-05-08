@@ -6,7 +6,7 @@
 .header-outer {
   width: 100%;
   min-width: 100vw;
-  background: var(--bg-dark);
+  background: #000000;
   position: sticky;
   top: 0;
   left: 0;
@@ -47,10 +47,12 @@
 }
 
 .header-logo-img {
-  height: 40px;
+  height: auto;
+  max-height: 50px;
   width: auto;
   object-fit: contain;
   display: block;
+  margin: 4px 0;
   transition: opacity 0.2s ease;
 }
 

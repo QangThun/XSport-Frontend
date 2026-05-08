@@ -252,9 +252,9 @@ export default function CategoryPage({ categoryType = 'all', categoryValue = '',
   /* Add to cart with localStorage persistence */
   const handleAddToCart = (e, product) => {
     e.preventDefault();
-    const existingCart = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]');
+    const existingCart = JSON.parse(localStorage.getItem('xsport_cart') || '[]');
     localStorage.setItem(
-      'maxxsport_cart',
+      'xsport_cart',
       JSON.stringify([...existingCart, product])
     );
     window.dispatchEvent(new Event('cartUpdated'));

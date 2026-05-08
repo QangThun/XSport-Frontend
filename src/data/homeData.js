@@ -1,6 +1,6 @@
 /**
  * homeData.js
- * Structured mock data for the Maxxsport homepage.
+ * Structured mock data for the Xsport homepage.
  * Designed for easy API integration — replace arrays with async fetch calls.
  */
 
@@ -618,9 +618,9 @@ export const blogPosts = [
   {
     id: 1,
     image: '/assets/blog/blog-bidv.png',
-    title: 'ƯU ĐÃI LỚN KHI MUA SẮM TẠI MAXXSPORT VỚI CHỦ THẺ BIDV',
-    excerpt: 'Mùa shopping này, MaxxSport bắt tay cùng Payoo và BIDV mang đến deal "hời" cho hội mê thể thao 💥 Chỉ...',
-    href: '/uu-dai-lon-khi-mua-sam-tai-maxxsport-voi-chu-the-bidv',
+    title: 'ƯU ĐÃI LỚN KHI MUA SẮM TẠI XSPORT VỚI CHỦ THẺ BIDV',
+    excerpt: 'Mùa shopping này, XSport bắt tay cùng Payoo và BIDV mang đến deal "hời" cho hội mê thể thao 💥 Chỉ...',
+    href: '/uu-dai-lon-khi-mua-sam-tai-xsport-voi-chu-the-bidv',
   },
   {
     id: 2,
@@ -635,15 +635,15 @@ export const promoPosts = [
   {
     id: 1,
     image: '/assets/blog/promo-sale50.png',
-    title: 'SẮM OUTFIT DU LỊCH, NHẬN DEAL CHỒNG DEAL TỪ MAXXSPORT',
+    title: 'SẮM OUTFIT DU LỊCH, NHẬN DEAL CHỒNG DEAL TỪ XSPORT',
     excerpt: '🔥Ưu đãi tới 50% hàng ngàn sản phẩm quần áo hè, giày dép các thương hiệu ADIDAS, NIKE, LI-NING, ASICS,...',
-    href: '/sam-outfit-du-lich-nhan-deal-chong-deal-tu-maxxsport',
+    href: '/sam-outfit-du-lich-nhan-deal-chong-deal-tu-xsport',
   },
   {
     id: 2,
     image: '/assets/blog/promo-grand-opening.png',
-    title: 'TƯNG BỪNG KHAI TRƯƠNG MAXXSPORT VÕ VĂN NGÂN',
-    excerpt: 'Lên lịch ghé MaxxSport 332-334 đường Võ Văn Ngân để không bỏ lỡ loạt deal này nhé 👇 🔥Ưu đãi tới 50%...',
-    href: '/tung-bung-khai-truong-maxxsport-vo-van-ngan',
+    title: 'TƯNG BỪNG KHAI TRƯƠNG XSPORT VÕ VĂN NGÂN',
+    excerpt: 'Lên lịch ghé XSport 332-334 đường Võ Văn Ngân để không bỏ lỡ loạt deal này nhé 👇 🔥Ưu đãi tới 50%...',
+    href: '/tung-bung-khai-truong-xsport-vo-van-ngan',
   },
 ];

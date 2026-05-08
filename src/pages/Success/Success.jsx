@@ -68,7 +68,7 @@ export default function Success() {
   /* ── Read last order from localStorage ── */
   const [order] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('maxxsport_last_order')) || null;
+      return JSON.parse(localStorage.getItem('xsport_last_order')) || null;
     } catch { return null; }
   });
 
@@ -77,7 +77,7 @@ export default function Success() {
 
   /* ── On mount: ensure cart is clear + dispatch events ── */
   useEffect(() => {
-    localStorage.setItem('maxxsport_cart', '[]');
+    localStorage.setItem('xsport_cart', '[]');
     window.dispatchEvent(new Event('cartUpdated'));
     window.dispatchEvent(new Event('systemDataUpdated'));
   }, []);
@@ -99,7 +99,7 @@ export default function Success() {
 
           {/* ── Subtitle ── */}
           <p className="success-subtitle">
-            Cảm ơn bạn đã mua sắm tại <strong>Maxxsport</strong>. Đơn hàng của bạn đã được tiếp nhận
+            Cảm ơn bạn đã mua sắm tại <strong>Xsport</strong>. Đơn hàng của bạn đã được tiếp nhận
             và đang được xử lý.
           </p>
 
@@ -181,8 +181,8 @@ export default function Success() {
             Cần hỗ trợ? Liên hệ hotline{' '}
             <a href="tel:19001234" className="success-support__link">1900 1234</a>
             {' '}hoặc email{' '}
-            <a href="mailto:support@maxxsport.com.vn" className="success-support__link">
-              support@maxxsport.com.vn
+            <a href="mailto:support@xsport.com.vn" className="success-support__link">
+              support@xsport.com.vn
             </a>
           </p>
 

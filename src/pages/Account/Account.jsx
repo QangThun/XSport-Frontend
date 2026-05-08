@@ -200,7 +200,7 @@ const SEED_ORDERS = [
 /* ── Helper: merge seed + localStorage orders, deduplicate by id ── */
 function loadOrders() {
   try {
-    const stored = JSON.parse(localStorage.getItem('maxxsport_orders') || '[]');
+    const stored = JSON.parse(localStorage.getItem('xsport_orders') || '[]');
     const merged = [...stored];
     const ids = new Set(stored.map(o => o.id));
     for (const seed of SEED_ORDERS) {
@@ -235,14 +235,14 @@ const NAV_ITEMS = [
 export default function Account() {
   /* ── Auth guard ── */
   useEffect(() => {
-    if (!localStorage.getItem('maxxsport_user')) {
+    if (!localStorage.getItem('xsport_user')) {
       window.location.href = '/auth';
     }
   }, []);
 
   /* ── User state ── */
   const [user, setUser] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('maxxsport_user')) || {}; }
+    try { return JSON.parse(localStorage.getItem('xsport_user')) || {}; }
     catch { return {}; }
   });
 
@@ -271,7 +271,7 @@ export default function Account() {
   }, []);
 
   /* ── Address Book state ── */
-  const ADDR_KEY = `maxxsport_addresses_${user.email || 'guest'}`;
+  const ADDR_KEY = `xsport_addresses_${user.email || 'guest'}`;
   const [addresses, setAddresses] = useState(() => {
     try { return JSON.parse(localStorage.getItem(ADDR_KEY)) || []; } catch { return []; }
   });
@@ -341,7 +341,7 @@ export default function Account() {
     reader.onload = () => {
       const updated = { ...user, avatar: reader.result };
       setUser(updated);
-      localStorage.setItem('maxxsport_user', JSON.stringify(updated));
+      localStorage.setItem('xsport_user', JSON.stringify(updated));
     };
     reader.readAsDataURL(file);
   };
@@ -351,7 +351,7 @@ export default function Account() {
     if (!editForm.name.trim()) return;
     const updated = { ...user, name: editForm.name.trim(), phone: editForm.phone.trim(), email: editForm.email.trim() };
     setUser(updated);
-    localStorage.setItem('maxxsport_user', JSON.stringify(updated));
+    localStorage.setItem('xsport_user', JSON.stringify(updated));
     setIsEditing(false);
     setSaveMsg('Cập nhật thành công!');
     setTimeout(() => setSaveMsg(''), 3000);
@@ -360,10 +360,10 @@ export default function Account() {
   /* ── Logout: backup cart, clear, redirect ── */
   const handleLogout = () => {
     if (user.email) {
-      try { localStorage.setItem(`saved_cart_${user.email}`, localStorage.getItem('maxxsport_cart') || '[]'); } catch {}
+      try { localStorage.setItem(`saved_cart_${user.email}`, localStorage.getItem('xsport_cart') || '[]'); } catch {}
     }
-    localStorage.setItem('maxxsport_cart', '[]');
-    localStorage.removeItem('maxxsport_user');
+    localStorage.setItem('xsport_cart', '[]');
+    localStorage.removeItem('xsport_user');
     window.dispatchEvent(new Event('cartUpdated'));
     window.location.href = '/';
   };

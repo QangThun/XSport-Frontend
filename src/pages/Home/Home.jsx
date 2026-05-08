@@ -68,8 +68,8 @@ function ProductCard({ id, brand, name, price, image, dotColor }) {
       image,
       quantity: 1,
     }
-    const existing = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]')
-    localStorage.setItem('maxxsport_cart', JSON.stringify([...existing, cartItem]))
+    const existing = JSON.parse(localStorage.getItem('xsport_cart') || '[]')
+    localStorage.setItem('xsport_cart', JSON.stringify([...existing, cartItem]))
     window.dispatchEvent(new Event('cartUpdated'))
     alert(`Đã thêm "${name}" vào giỏ hàng!`)
   }
@@ -129,8 +129,8 @@ function SaleProductCard({ id, brand, name, currentPrice, originalPrice, discoun
       image,
       quantity: 1,
     }
-    const existing = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]')
-    localStorage.setItem('maxxsport_cart', JSON.stringify([...existing, cartItem]))
+    const existing = JSON.parse(localStorage.getItem('xsport_cart') || '[]')
+    localStorage.setItem('xsport_cart', JSON.stringify([...existing, cartItem]))
     window.dispatchEvent(new Event('cartUpdated'))
     alert(`Đã thêm "${name}" vào giỏ hàng!`)
   }

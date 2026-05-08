@@ -1,6 +1,6 @@
 /* ===========================================================
    PRODUCT DETAIL PAGE — Premium E-commerce Styling
-   Maxxsport-inspired layout: 2-column desktop, stacked mobile
+   Xsport-inspired layout: 2-column desktop, stacked mobile
    =========================================================== */
 
 /* ── Container ─────────────────────────────────────────────── */
@@ -59,7 +59,7 @@
   align-items: start;
 }
 
-/* ── LEFT: Image Gallery (Maxxsport: thumbs left + main right) */
+/* ── LEFT: Image Gallery (Xsport: thumbs left + main right) */
 .pd-gallery {
   display: flex;
   flex-direction: row;
@@ -436,7 +436,7 @@
   background: #222222;
 }
 
-/* ── Cart Row (Maxxsport: quantity + add-to-cart inline) ──── */
+/* ── Cart Row (Xsport: quantity + add-to-cart inline) ──── */
 .pd-cart-row {
   display: flex;
   align-items: center;

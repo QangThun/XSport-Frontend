@@ -104,7 +104,7 @@ export default function Header() {
   /* ── Load user from localStorage on mount ──────────────────── */
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('maxxsport_user');
+      const saved = localStorage.getItem('xsport_user');
       if (saved) setCurrentUser(JSON.parse(saved));
     } catch { /* ignore */ }
   }, []);
@@ -113,7 +113,7 @@ export default function Header() {
   useEffect(() => {
     const updateBadge = () => {
       try {
-        const cart = JSON.parse(localStorage.getItem('maxxsport_cart') || '[]');
+        const cart = JSON.parse(localStorage.getItem('xsport_cart') || '[]');
         const totalQty = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
         setCartCount(totalQty);
       } catch {
@@ -145,13 +145,13 @@ export default function Header() {
   const handleLogout = () => {
     if (currentUser?.email) {
       try {
-        const currentCart = localStorage.getItem('maxxsport_cart') || '[]';
+        const currentCart = localStorage.getItem('xsport_cart') || '[]';
         localStorage.setItem(`saved_cart_${currentUser.email}`, currentCart);
       } catch { /* ignore */ }
     }
 
-    localStorage.setItem('maxxsport_cart', '[]');
-    localStorage.removeItem('maxxsport_user');
+    localStorage.setItem('xsport_cart', '[]');
+    localStorage.removeItem('xsport_user');
     window.dispatchEvent(new Event('cartUpdated'));
 
     setCurrentUser(null);
@@ -166,10 +166,10 @@ export default function Header() {
 
         {/* LEFT ZONE — Logo */}
         <div className="header-left">
-          <a href="/" aria-label="Trang chủ MAXX SPORT" className="header-logo-link">
+          <a href="/" aria-label="Trang chủ XSPORT" className="header-logo-link">
             <img
-              src="/assets/maxx-sport-logo.png"
-              alt="MAXX SPORT — Siêu thị thể thao"
+              src="/assets/logo_asset.png"
+              alt="XSPORT — Siêu thị thể thao"
               className="header-logo-img"
             />
           </a>
